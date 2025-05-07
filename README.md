@@ -46,7 +46,6 @@ npm install
 npm run dev
 ```
 
-The application will be available at `https://expenses-tracker-frontend-osyj.vercel.app/`
 
 
 
