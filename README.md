@@ -46,56 +46,8 @@ npm install
 npm run dev
 ```
 
-The application will be available at `http://localhost:5173`
+The application will be available at `https://expenses-tracker-frontend-osyj.vercel.app/`
 
-## 🏗️ Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run lint` - Run ESLint
-- `npm run preview` - Preview production build
 
-## 🏗️ Project Structure
 
-```
-src/
-├── assets/        # Static assets
-├── components/    # Reusable UI components
-├── pages/         # Page components
-├── types/         # TypeScript type definitions
-├── App.tsx        # Main application component
-└── main.tsx       # Application entry point
-```
-
-## 🎨 Styling
-
-This project uses Tailwind CSS for styling with the following features:
-
-- Custom color scheme
-- Responsive design
-- Dark mode support
-- Typography plugin
-- Animation utilities
-
-## 🔧 Development
-
-1. The project uses ESLint for code linting
-2. TypeScript for type safety
-3. Vite for fast development and building
-
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
-
-## 👥 Authors
-
-- Your Name - Initial work
-
-## 🙏 Acknowledgments
-
-- Thanks to all the open-source libraries used in this project
-- Special thanks to the React and Tailwind CSS communities
