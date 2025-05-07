@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { type Expense, type ExpenseFormData } from "../types/expense";
 import ExpenseForm from "../components/ExpenseForm";
 import ExpenseList from "../components/ExpenseList";
