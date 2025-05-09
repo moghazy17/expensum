@@ -1,3 +1,4 @@
+// src/pages/Index.tsx
 import { useState, useEffect } from "react";
 import { type Expense, type ExpenseFormData } from "../types/expense";
 import ExpenseForm from "../components/ExpenseForm";
@@ -5,10 +6,13 @@ import ExpenseList from "../components/ExpenseList";
 import ExpenseFilters from "../components/ExpenseFilters";
 import ExpensesSummary from "../components/ExpensesSummary";
 import { toast } from "sonner";
+import { useAuth } from "../types/use-auth";
 
 const API_URL = "http://localhost:8080/api/expenses";
 
 const Index = () => {
+  const { user, logout } = useAuth();
+  
   // State for expenses and filters
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [filteredExpenses, setFilteredExpenses] = useState<Expense[]>(expenses);
@@ -24,7 +28,11 @@ const Index = () => {
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
-        const response = await fetch(API_URL);
+        const response = await fetch(API_URL, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
         const data = await response.json();
         setExpenses(data);
       } catch (error) {
@@ -72,12 +80,13 @@ const Index = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add expense");
+        throw new Error("Failed to add eexpense");
       }
 
       const newExpense = await response.json();
@@ -94,6 +103,9 @@ const Index = () => {
     try {
       const response = await fetch(`${API_URL}/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       });
 
       if (!response.ok) {
@@ -112,9 +124,20 @@ const Index = () => {
     <div className="min-h-screen bg-background p-4 md:p-6">
       <div className="max-w-4xl mx-auto">
         <header className="mb-8">
-          <div className="flex items-center gap-4">
-            <img src="/logo.svg" alt="ExpenSum" className="w-16 h-16" />
-            <h1 className="text-3xl font-bold text-foreground">ExpenSum</h1>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <img src="/logo.svg" alt="ExpenSum" className="w-16 h-16" />
+              <h1 className="text-3xl font-bold text-foreground">ExpenSum</h1>
+            </div>
+            <div className="flex items-center gap-4">
+              <p className="text-lg font-medium">Hello, {user?.username}</p>
+              <button 
+                onClick={logout}
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </header>
 
