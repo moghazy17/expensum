@@ -1,6 +1,7 @@
 package com.expensum.entity;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.time.LocalDate;
 
 @Entity
@@ -14,6 +15,10 @@ public class Expense {
     private String category;
     private String description;
     private LocalDate date;
+    @ManyToOne
+    @JoinColumn(name = "username", referencedColumnName = "username")
+    @JsonBackReference
+    private User user;
 
     // Getters and Setters
     public Long getId() {
@@ -54,5 +59,13 @@ public class Expense {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
+    public User getUser() {
+        return user;
     }
 } 

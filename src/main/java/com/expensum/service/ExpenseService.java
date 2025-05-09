@@ -17,6 +17,10 @@ public class ExpenseService {
         return expenseRepository.findAll();
     }
 
+    public List<Expense> getExpensesByUsername(String username) {
+        return expenseRepository.findByUserUsername(username);
+    }
+
     public Expense saveExpense(Expense expense) {
         return expenseRepository.save(expense);
     }

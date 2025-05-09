@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -53,6 +55,10 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Expense> expenses;
 
 
 }
