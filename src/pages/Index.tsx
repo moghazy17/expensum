@@ -6,6 +6,8 @@ import ExpenseFilters from "../components/ExpenseFilters";
 import ExpensesSummary from "../components/ExpensesSummary";
 import { toast } from "sonner";
 
+const API_URL = "http://localhost:8080/api/expenses";
+
 const Index = () => {
   // State for expenses and filters
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -17,6 +19,22 @@ const Index = () => {
   const [yearFilter, setYearFilter] = useState<number>(
     new Date().getFullYear()
   );
+
+  // Fetch expenses from backend
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        setExpenses(data);
+      } catch (error) {
+        toast.error("Failed to fetch expenses");
+        console.error("Error fetching expenses:", error);
+      }
+    };
+
+    fetchExpenses();
+  }, []);
 
   // Apply filters whenever expenses or filter values change
   useEffect(() => {
@@ -48,20 +66,46 @@ const Index = () => {
   }, [expenses, categoryFilter, monthFilter, yearFilter]);
 
   // Add a new expense
-  const handleAddExpense = (formData: ExpenseFormData) => {
-    const newExpense: Expense = {
-      ...formData,
-      id: Date.now().toString(),
-    };
+  const handleAddExpense = async (formData: ExpenseFormData) => {
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    setExpenses((prev) => [newExpense, ...prev]);
-    toast.success("Expense added successfully");
+      if (!response.ok) {
+        throw new Error("Failed to add expense");
+      }
+
+      const newExpense = await response.json();
+      setExpenses((prev) => [newExpense, ...prev]);
+      toast.success("Expense added successfully");
+    } catch (error) {
+      toast.error("Failed to add expense");
+      console.error("Error adding expense:", error);
+    }
   };
 
   // Delete an expense
-  const handleDeleteExpense = (id: string) => {
-    setExpenses((prev) => prev.filter((expense) => expense.id !== id));
-    toast.success("Expense deleted successfully");
+  const handleDeleteExpense = async (id: string) => {
+    try {
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete expense");
+      }
+
+      setExpenses((prev) => prev.filter((expense) => expense.id !== id));
+      toast.success("Expense deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete expense");
+      console.error("Error deleting expense:", error);
+    }
   };
 
   return (
